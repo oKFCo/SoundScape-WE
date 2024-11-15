@@ -23,12 +23,11 @@ class SpotifyWidget extends StatefulWidget {
 }
 
 class SpotifyWidgetState extends State<SpotifyWidget> {
-  static const double imageSize = 50.0; // Size of the track image
-  static const double titleFontSize = 15.0; // Font size of the track title
-  static const double subtitleFontSize = 12.0; // Font size for artist name
-  static const double titleWidthFactor = 3.0; // Width factor for the title
+  static const double imageSize = 50.0;
+  static const double titleFontSize = 15.0;
+  static const double subtitleFontSize = 12.0;
+  static const double titleWidthFactor = 3.0;
 
-  // Optional function to cleanly return the gradient
   LinearGradient _getGradient(ThemeData theme) {
     return LinearGradient(
       colors: [
@@ -51,10 +50,11 @@ class SpotifyWidgetState extends State<SpotifyWidget> {
     final double titleWidth = cardWidth / titleWidthFactor;
 
     return Container(
+      width: MediaQuery.of(context).size.width / 2 - 65,
       margin: const EdgeInsets.all(10.0),
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        gradient: _getGradient(theme), // Apply gradient
+        gradient: _getGradient(theme),
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
@@ -65,64 +65,52 @@ class SpotifyWidgetState extends State<SpotifyWidget> {
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(4.0),
-                child: Image.memory(
-                  widget.track.image,
-                  width: imageSize,
-                  height: imageSize,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 10),
-              SizedBox(
-                width:
-                    titleWidth, // Set width to a fraction of the card's width
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    MarqueeText(
-                      text: widget.track.title,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: titleFontSize,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      widget.track.artist,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: subtitleFontSize,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4.0),
+            child: Image.memory(
+              widget.track.image,
+              width: imageSize,
+              height: imageSize,
+              fit: BoxFit.cover,
+            ),
           ),
-          if (widget.trackWallpapers.isEmpty)
-            const Tooltip(
-              message: 'No wallpapers available',
-              child: Icon(
-                Icons.remove_circle_outline,
-                color: Colors.white,
-              ),
-            )
-          else
-            OverlappingAvatarGroup(
-              overlappingFactor: 1.3,
+          const SizedBox(width: 10),
+          SizedBox(
+            width: titleWidth,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MarqueeText(
+                  text: widget.track.title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: titleFontSize,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  widget.track.artist,
+                  style: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: subtitleFontSize,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          Flexible(
+            child: OverlappingAvatarGroup(
+              overlappingFactor: 1.2,
               avatars: widget.trackWallpapers,
               onAvatarClick: widget.onShowWallpaperManager,
             ),
+          ),
         ],
       ),
     );
