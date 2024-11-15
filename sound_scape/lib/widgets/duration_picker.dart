@@ -103,15 +103,6 @@ class DurationPickerState extends State<DurationPicker> {
                   onChanged: (value) {
                     setState(() {
                       _selectedMinute = value.toInt();
-                      if (_selectedMinute == 0 && _selectedSecond < 5) {
-                        _selectedSecond = 5;
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                                'Minimum wait time is 5 seconds when minutes is set to 0.'),
-                          ),
-                        );
-                      }
                     });
                   },
                 ),
