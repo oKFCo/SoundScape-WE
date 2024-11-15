@@ -32,21 +32,22 @@ class WEworker {
 
   /// Resets the wallpaper queue based on the currently playing track.
   Future<void> resetQueue(
-      List<WallpaperModel> trackWallpapers, bool trackPlaying) async {
+      List<WallpaperModel> trackWallpapers, bool trackPlaying,
+      [bool resetTimer = false]) async {
     if (!trackPlaying) {
       _wallpaperTimer?.cancel();
       return;
     }
     try {
+      int oldLength = wallpapers.length;
       wallpapers = trackWallpapers;
 
       if (wallpapers.isEmpty) {
         _wallpaperTimer?.cancel();
         return;
-      } else if (wallpapers.length > 1) {
-        if (_wallpaperTimer == null) {
-          startWallpaperTimer();
-        }
+      }
+      if (resetTimer || oldLength <= 1) {
+        startWallpaperTimer();
       }
 
       // Set the initial wallpaper
@@ -60,6 +61,9 @@ class WEworker {
   Future<void> startWallpaperTimer() async {
     _wallpaperTimer?.cancel();
     _currentWallpaperIndex = 0;
+    if (wallpapers.length <= 1) {
+      return;
+    }
     if (wallpapers.isNotEmpty) {
       int minutes = 1;
       int seconds = 0;
