@@ -24,6 +24,7 @@ import 'models/wallpaper_model.dart';
 import 'app_theme.dart';
 import 'app_logger.dart';
 // Desktop
+import 'package:windows_single_instance/windows_single_instance.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
 
@@ -34,8 +35,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (isDesktop) {
     await windowManager.ensureInitialized();
-
+    await WindowsSingleInstance.ensureSingleInstance([], "SoundScape");
     WindowOptions windowOptions = const WindowOptions(
+      title: "SoundScape",
       minimumSize: Size(1060, 600),
       size: Size(1280, 720),
       center: true,
@@ -297,7 +299,6 @@ class MainScreenState extends State<MainScreen>
           Positioned(
             bottom: 0,
             left: 5,
-            right: MediaQuery.of(context).size.width / 2 + 40,
             child: Consumer<TrackProvider>(
               builder: (context, trackProvider, child) {
                 final track = trackProvider.playingTrack;
