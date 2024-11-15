@@ -84,7 +84,6 @@ class WallpaperManagerViewState extends State<WallpaperManagerView>
       });
     } catch (e) {
       setLoadingState(false);
-      // Handle error (e.g., show a message to the user)
     }
   }
 
@@ -106,7 +105,6 @@ class WallpaperManagerViewState extends State<WallpaperManagerView>
             .updateTrackWallpapers();
       } catch (e) {
         setLoadingState(false);
-        // Handle error (e.g., show a message to the user)
       }
     }
   }
@@ -129,7 +127,6 @@ class WallpaperManagerViewState extends State<WallpaperManagerView>
       }
     } catch (e) {
       setLoadingState(false);
-      // Handle error (e.g., show a message to the user)
     }
   }
 
@@ -171,7 +168,6 @@ class WallpaperManagerViewState extends State<WallpaperManagerView>
         }
       } catch (e) {
         setLoadingState(false);
-        // Handle error (e.g., show a message to the user)
       }
     }
   }
@@ -279,8 +275,9 @@ class WallpaperManagerViewState extends State<WallpaperManagerView>
                           onRemoveTrack: _removeTrackFromWallpaper,
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 23),
                       _buildTrackActions(),
+                      const SizedBox(height: 8),
                     ],
                   ),
                 ),
