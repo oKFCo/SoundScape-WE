@@ -46,11 +46,11 @@ class SpotifyWidgetState extends State<SpotifyWidget> {
     }
 
     final theme = Theme.of(context);
-    final double cardWidth = MediaQuery.of(context).size.width;
+    final double cardWidth = MediaQuery.of(context).size.width / 2 - 65;
     final double titleWidth = cardWidth / titleWidthFactor;
 
     return Container(
-      width: MediaQuery.of(context).size.width / 2 - 65,
+      width: cardWidth,
       margin: const EdgeInsets.all(10.0),
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
