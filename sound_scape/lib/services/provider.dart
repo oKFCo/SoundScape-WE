@@ -24,6 +24,22 @@ class TrackProvider extends ChangeNotifier {
     worker = WEworker(onWallpaperSet: updateActiveWallpaper);
   }
 
+  bool _identicalTracks(TrackModel? track1, TrackModel? track2) {
+    if (track1 == track2) {
+      return true;
+    }
+
+    if (track1 == null || track2 == null) {
+      return false;
+    }
+
+    if (track1.title == track2.title && track1.artist == track2.artist) {
+      return true;
+    }
+
+    return false;
+  }
+
   /// Loads wallpapers associated with the currently playing track.
   Future<void> loadAvatarsForTrack() async {
     if (_playingTrack == null) {
@@ -66,9 +82,10 @@ class TrackProvider extends ChangeNotifier {
   }
 
   /// Updates the list of wallpapers for the current track.
-  Future<void> updateTrackWallpapers() async {
+  Future<void> updateTrackWallpapers([bool resetTimer = false]) async {
     await loadAvatarsForTrack();
-    worker.resetQueue(trackWallpapers, playingTrack?.isPlaying ?? false);
+    await worker.resetQueue(
+        trackWallpapers, playingTrack?.isPlaying ?? false, resetTimer);
     notifyListeners();
   }
 
@@ -80,17 +97,15 @@ class TrackProvider extends ChangeNotifier {
       return;
     }
 
-    // Check if the new track is the same as the current track and only update playing status
-    if (_playingTrack != null &&
-        playingTrack!.title == track.title &&
-        _playingTrack!.artist == track.artist) {
-      worker.resetQueue(trackWallpapers, track.isPlaying);
+    bool identical = _identicalTracks(_playingTrack, track);
+    if (identical) {
       updateActiveWallpaper(null);
+      worker.resetQueue(trackWallpapers, track.isPlaying, false);
       return;
     }
 
     // Update the playing track and load its wallpapers
     _playingTrack = track;
-    await updateTrackWallpapers();
+    await updateTrackWallpapers(true);
   }
 }
